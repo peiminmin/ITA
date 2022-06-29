@@ -19,17 +19,52 @@ package _go
 0 <= n <= 1000
 0 <= m <= 1000
 
-解题思路： 二分查找
+解题思路： 从右上角开始，比target大，往前走，比target小，往下走
 */
 
 func findNumberIn2DArray(matrix [][]int, target int) bool {
-	var row, cow int
-	row = len(matrix)
-	if row > 0 {
-		cow = len(matrix[0])
+	if matrix == nil {
+		return false
+	}
+	var endX, endY int
+	endX = len(matrix) - 1
+	if endX >= 0 {
+		endY = len(matrix[0]) - 1
+		if endY < 0 {
+			return false
+		}
+	} else {
+		return false
 	}
 
-	for i, j := 0, 0; i < row && j < cow; {
-
+	curX, curY := 0, endY
+	for curX <= endX && curY >= 0 {
+		if matrix[curX][curY] > target {
+			curY--
+		} else if matrix[curX][curY] < target {
+			curX++
+		} else {
+			return true
+		}
 	}
+	return false
+}
+
+func findNumber(array []int, target int) bool {
+	start, end := 0, len(array)-1
+	for start < end-1 {
+		if array[start] == target || array[end] == target {
+			return true
+		}
+
+		mid := (start + end) / 2
+		if array[mid] > target {
+			end = mid
+		} else if array[mid] < target {
+			start = mid
+		} else {
+			return true
+		}
+	}
+	return false
 }
